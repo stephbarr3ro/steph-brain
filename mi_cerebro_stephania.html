@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 Mi Cerebro — Stephania Barrero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF9;
+    --card: #FFFFFF;
+    --text: #1C1C1E;
+    --muted: #6B7280;
+    --border: #E8E6E1;
+    --radius: 12px;
+    --radius-sm: 8px;
+
+    --urgente-bg: #FEF2F2; --urgente-text: #991B1B; --urgente-accent: #EF4444; --urgente-mid: #FCA5A5;
+    --hogar-bg: #FFFBEB;   --hogar-text: #92400E;   --hogar-accent: #F59E0B;   --hogar-mid: #FCD34D;
+    --trabajo-bg: #EFF6FF; --trabajo-text: #1E40AF; --trabajo-accent: #3B82F6; --trabajo-mid: #93C5FD;
+    --familia-bg: #FFF7ED; --familia-text: #9A3412; --familia-accent: #F97316; --familia-mid: #FDC9A0;
+    --finanzas-bg: #F0FDF4;--finanzas-text: #166534;--finanzas-accent: #22C55E;--finanzas-mid: #86EFAC;
+    --personal-bg: #F5F3FF;--personal-text: #5B21B6;--personal-accent: #8B5CF6;--personal-mid: #C4B5FD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--personal-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    border: 2px solid var(--personal-mid);
+    flex-shrink: 0;
+  }
+  .header-info { flex: 1; }
+  .header-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .header-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .header-right { text-align: right; }
+  .date-badge {
+    background: var(--finanzas-bg);
+    color: var(--finanzas-text);
+    font-size: 11px; font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--finanzas-mid);
+    white-space: nowrap;
+  }
+  .address-badge {
+    font-size: 11px; color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* NAV TABS */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex; gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 14px 16px;
+    font-size: 13px; font-weight: 500;
+    border: none; background: none;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--text); border-bottom-color: var(--text); }
+  .nav-btn span { font-size: 16px; }
+
+  /* MAIN CONTENT */
+  .main { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTION HEADERS */
+  .sec {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 24px 0 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sec::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  /* STATS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    border: 1px solid transparent;
+  }
+  .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .stat-val { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 3px; }
+  .stat-sub { font-size: 11px; opacity: 0.8; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .color-card {
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    border: 1px solid transparent;
+  }
+  .card-title {
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* TASKS */
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 6px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 2px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .task:hover { background: rgba(0,0,0,0.03); }
+  .chk {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid #D1D5DB;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    transition: all 0.15s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .chk.done { color: white; border-color: transparent; }
+  .task-body { flex: 1; }
+  .task-title { font-size: 13px; line-height: 1.4; transition: all 0.15s; }
+  .task-title.done { text-decoration: line-through; opacity: 0.45; }
+  .task-note { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+  .task-right { flex-shrink: 0; }
+
+  /* BADGES */
+  .badge {
+    font-size: 10px; font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .b-red    { background: var(--urgente-bg);  color: var(--urgente-text);  border: 1px solid var(--urgente-mid); }
+  .b-amber  { background: var(--hogar-bg);    color: var(--hogar-text);    border: 1px solid var(--hogar-mid); }
+  .b-blue   { background: var(--trabajo-bg);  color: var(--trabajo-text);  border: 1px solid var(--trabajo-mid); }
+  .b-orange { background: var(--familia-bg);  color: var(--familia-text);  border: 1px solid var(--familia-mid); }
+  .b-green  { background: var(--finanzas-bg); color: var(--finanzas-text); border: 1px solid var(--finanzas-mid); }
+  .b-purple { background: var(--personal-bg); color: var(--personal-text); border: 1px solid var(--personal-mid); }
+  .b-gray   { background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; }
+
+  /* TIP BOXES */
+  .tip {
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+  }
+
+  /* SCHOOL CARDS */
+  .school {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1.5px solid transparent;
+  }
+  .school-name { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  .school-info { font-size: 12px; line-height: 1.8; }
+
+  /* MONEY TABLE */
+  .money-row {
+    display: flex; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #F3F4F6;
+    font-size: 13px;
+  }
+  .money-row:last-child { border-bottom: none; }
+  .money-l { flex: 1; color: var(--muted); }
+  .money-v { font-weight: 600; }
+  .money-total {
+    display: flex; align-items: center;
+    padding: 10px 0 4px;
+    margin-top: 4px;
+    border-top: 2px solid var(--border);
+    font-size: 14px; font-weight: 600;
+  }
+  .money-total .money-l { color: var(--text); }
+
+  /* PROGRESS */
+  .prog-wrap { margin-bottom: 14px; }
+  .prog-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+  .prog-bar { height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 4px; }
+
+  /* TWO COL */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+  /* FOOTER */
+  .footer {
+    max-width: 860px; margin: 32px auto 0;
+    padding: 0 20px;
+    font-size: 11px; color: var(--muted);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  /* COMPLETION BAR */
+  .completion-bar {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .comp-label { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+  .comp-bar { flex: 1; height: 6px; background: #F3F4F6; border-radius: 3px; overflow: hidden; }
+  .comp-fill { height: 100%; background: #22C55E; border-radius: 3px; transition: width 0.4s; }
+  .comp-pct { font-size: 13px; font-weight: 600; color: var(--finanzas-text); min-width: 36px; text-align: right; }
+
+  @media (max-width: 600px) {
+    .header { padding: 16px; }
+    .main { padding: 20px 14px; }
+    .two { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="avatar">👩‍💻</div>
+  <div class="header-info">
+    <p class="header-name">Mi Cerebro — Stephania Barrero</p>
+    <p class="header-sub">🎨 Diseñadora gráfica & web · 29 años · Mamá de Amare (6) · Travis Barrero</p>
+  </div>
+  <div class="header-right">
+    <p class="date-badge" id="fecha-badge">📅 hoy</p>
+    <p class="address-badge">📍 C/ Sant Josep de Calassanç 7, 1º 1ª · CP 46701 Gandía 🇪🇸</p>
+  </div>
+</div>
+
+<!-- TABS -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="tab('urgente',this)"><span>🔥</span>Urgente</button>
+  <button class="nav-btn" onclick="tab('hogar',this)"><span>🏠</span>Hogar</button>
+  <button class="nav-btn" onclick="tab('trabajo',this)"><span>💼</span>Trabajo</button>
+  <button class="nav-btn" onclick="tab('familia',this)"><span>👨‍👩‍👦</span>Familia</button>
+  <button class="nav-btn" onclick="tab('finanzas',this)"><span>💰</span>Finanzas</button>
+  <button class="nav-btn" onclick="tab('formacion',this)"><span>🎓</span>Formación</button>
+  <button class="nav-btn" onclick="tab('personal',this)"><span>🌱</span>Personal</button>
+</nav>
+
+<div class="main">
+
+  <!-- PROGRESO GLOBAL -->
+  <div class="completion-bar">
+    <span class="comp-label">✅ Progreso total</span>
+    <div class="comp-bar"><div class="comp-fill" id="global-bar" style="width:0%"></div></div>
+    <span class="comp-pct" id="global-pct">0%</span>
+  </div>
+
+  <!-- ==================== URGENTE ==================== -->
+  <div id="tab-urgente" class="panel active">
+
+    <div class="stat-grid">
+      <div class="stat" style="background:var(--urgente-bg);border-color:var(--urgente-mid);">
+        <p class="stat-label" style="color:var(--urgente-text);">💸 Cobrar urgente</p>
+        <p class="stat-val" style="color:var(--urgente-text);">$5,000</p>
+        <p class="stat-sub" style="color:var(--urgente-text);">Soul Dogs Stories · USD</p>
+      </div>
+      <div class="stat" style="background:var(--hogar-bg);border-color:var(--hogar-mid);">
+        <p class="stat-label" style="color:var(--hogar-text);">🏠 Entrada piso</p>
+        <p class="stat-val" style="color:var(--hogar-text);">€2,850</p>
+        <p class="stat-sub" style="color:var(--hogar-text);">Renta + depósito + comisión</p>
+      </div>
+      <div class="stat" style="background:var(--finanzas-bg);border-color:var(--finanzas-mid);">
+        <p class="stat-label" style="color:var(--finanzas-text);">📅 Todo vuelve</p>
+        <p class="stat-val" style="color:var(--finanzas-text);">Martes</p>
+        <p class="stat-sub" style="color:var(--finanzas-text);">8 de abril · día de acción</p>
+      </div>
+      <div class="stat" style="background:var(--personal-bg);border-color:var(--personal-mid);">
+        <p class="stat-label" style="color:var(--personal-text);">🎓 Máster inicia</p>
+        <p class="stat-val" style="color:var(--personal-text);">Sep 2026</p>
+        <p class="stat-sub" style="color:var(--personal-text);">Presencial · Valencia</p>
+      </div>
+    </div>
+
+    <div class="color-card" style="background:var(--urgente-bg);border-color:var(--urgente-mid);">
+      <p class="card-title" style="color:var(--urgente-text);">🔥 Esta semana — el martes es el día de acción</p>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u1"></div><div class="task-body"><p class="task-title">💵 Cerrar Soul Dogs Stories — enviar factura y cobrar $5,000</p><p class="task-note">Confirmar entrega con la cliente · emitir factura PayPal o Wise · cobrar antes de mudarte</p></div><div class="task-right"><span class="badge b-red">🚨 Urgente</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u2"></div><div class="task-body"><p class="task-title">🏠 Pagar entrada apartamento (€2,850 total)</p><p class="task-note">€950 renta + €950 depósito + €950 comisión · firmar contrato y guardar copia</p></div><div class="task-right"><span class="badge b-red">€2,850</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u3"></div><div class="task-body"><p class="task-title">🏛️ Empadronarse — Ayuntamiento de Gandía</p><p class="task-note">Tú + Travis + Amare · llevar contrato + pasaportes · cita previa en sede.gandia.es</p></div><div class="task-right"><span class="badge b-red">Martes</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u4"></div><div class="task-body"><p class="task-title">🏫 Llamar Escolapios — plaza 1º Primaria para Amare</p><p class="task-note">📞 962 873 846 · período matrícula abierto AHORA · plazas limitadas · 2 min de tu casa</p></div><div class="task-right"><span class="badge b-red">Martes 9h</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u5"></div><div class="task-body"><p class="task-title">👶 Pediatra — derivación urgente CDIAP para Amare</p><p class="task-note">Atención temprana gratuita · límite edad 6-7 años · no esperar más</p></div><div class="task-right"><span class="badge b-red">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u6"></div><div class="task-body"><p class="task-title">📝 Registrarse como autónoma (RETA + Hacienda)</p><p class="task-note">Tarifa plana €80/mes · IAE 742 diseñadora gráfica + 759 web · sede.agenciatributaria.gob.es</p></div><div class="task-right"><span class="badge b-red">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u7"></div><div class="task-body"><p class="task-title">🎁 Solicitar bono alquiler joven (€250/mes × 2 años = €6,000)</p><p class="task-note">GVA.es · tienes 29 años · necesitas contrato de arrendamiento firmado</p></div><div class="task-right"><span class="badge b-red">Con contrato</span></div></div>
+      <div class="task" onclick="tick(this,'urgente')"><div class="chk" data-id="u8"></div><div class="task-body"><p class="task-title">🏦 Abrir cuenta BBVA en España</p><p class="task-note">Para domiciliar recibos y construir historial bancario para la futura hipoteca</p></div><div class="task-right"><span class="badge b-red">Martes</span></div></div>
+    </div>
+
+    <div class="color-card" style="background:var(--trabajo-bg);border-color:var(--trabajo-mid);">
+      <p class="card-title" style="color:var(--trabajo-text);">📅 Este mes — sin perder el ritmo</p>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="u9"></div><div class="task-body"><p class="task-title">💡 Registrarse como Agente Digitalizadora Kit Digital</p><p class="task-note">red.es/es/iniciativas/kit-digital · ingresos del Estado para tus servicios de hostelería digital</p></div><div class="task-right"><span class="badge b-blue">Mes 1</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="u10"></div><div class="task-body"><p class="task-title">💳 Actualizar Stripe con dirección España y cuenta BBVA</p><p class="task-note">stripe.com → settings → bank accounts · conectar IBAN español o Wise EU</p></div><div class="task-right"><span class="badge b-blue">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="u11"></div><div class="task-body"><p class="task-title">👔 Contratar gestora fiscal en Gandía (~€60/mes)</p><p class="task-note">Modelos trimestrales (IVA 303, IRPF 130) · 100% deducible · pide recomendaciones en grupos autónomos Valencia</p></div><div class="task-right"><span class="badge b-blue">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="u12"></div><div class="task-body"><p class="task-title">🎓 Pagar matrícula máster Valencia (€300)</p><p class="task-note">Reservar plaza · inicio septiembre 2026 · presencial en Valencia (tren 40 min desde Gandía)</p></div><div class="task-right"><span class="badge b-amber">Este mes</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="u13"></div><div class="task-body"><p class="task-title">⚖️ Gestoría extranjería para papeles Travis + Amare</p><p class="task-note">Presupuesto €2,000 · reagrupación familiar de cónyuge de española · proceso 3-6 meses</p></div><div class="task-right"><span class="badge b-amber">Este mes</span></div></div>
+    </div>
+  </div>
+
+  <!-- ==================== HOGAR ==================== -->
+  <div id="tab-hogar" class="panel">
+
+    <div class="tip" style="background:var(--hogar-bg);border-left-color:var(--hogar-accent);color:var(--hogar-text);">
+      🏠 <strong>Dirección completa:</strong> Carrer Sant Josep de Calassanç nº 7, piso 1º, puerta 1ª · CP <strong>46701</strong> · Gandía, Valencia, España 🇪🇸<br>
+      ✨ El nombre de tu calle honra al fundador del colegio Escolapios — ¡que está a 2 minutos de tu puerta!
+    </div>
+
+    <p class="sec">📋 Trámites de entrada al apartamento</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h1"></div><div class="task-body"><p class="task-title">💶 Pagar €950 — renta primer mes</p><p class="task-note">Confirmar método de pago con el casero · transferencia o efectivo</p></div><div class="task-right"><span class="badge b-red">€950 🔴</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h2"></div><div class="task-body"><p class="task-title">🔒 Pagar €950 — depósito (fianza)</p><p class="task-note">Se devuelve al terminar el contrato si no hay desperfectos · pedir recibo</p></div><div class="task-right"><span class="badge b-red">€950 🔴</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h3"></div><div class="task-body"><p class="task-title">🤝 Pagar €950 — comisión agencia</p><p class="task-note">Pago único · conservar el recibo para declaración de renta</p></div><div class="task-right"><span class="badge b-red">€950 🔴</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h4"></div><div class="task-body"><p class="task-title">📄 Firmar contrato de arrendamiento</p><p class="task-note">Guardar copia digital y física · es la base para empadronamiento, bono alquiler y declaración</p></div><div class="task-right"><span class="badge b-amber">Necesario</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h5"></div><div class="task-body"><p class="task-title">🏛️ Empadronarse — Ayuntamiento de Gandía</p><p class="task-note">Tú + Travis + Amare · llevar: contrato alquiler + pasaportes/DNI · cita en sede.gandia.es</p></div><div class="task-right"><span class="badge b-red">Martes</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h6"></div><div class="task-body"><p class="task-title">⚡ Dar de alta luz y agua</p><p class="task-note">Iberdrola o Endesa para luz · Aguas de Gandía para agua · necesitas contrato y DNI</p></div><div class="task-right"><span class="badge b-amber">Día 1</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h7"></div><div class="task-body"><p class="task-title">📶 Contratar internet (~€25-30/mes)</p><p class="task-note">MásMóvil, Orange, Movistar · fibra disponible en Gandía · contratar online</p></div><div class="task-right"><span class="badge b-green">Semana 1</span></div></div>
+    </div>
+
+    <p class="sec">🛋️ Amoblando — básicos primero</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h8"></div><div class="task-body"><p class="task-title">🛏️ 2 camas con colchón</p><p class="task-note">IKEA Valencia (1h en tren o coche) · ~€150-250 c/u · también Wallapop Gandía para segunda mano</p></div><div class="task-right"><span class="badge b-amber">Prioridad 1</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h9"></div><div class="task-body"><p class="task-title">👗 2 armarios / closets</p><p class="task-note">IKEA PAX desde €120 · medir el espacio antes · servicio de montaje disponible ~€60</p></div><div class="task-right"><span class="badge b-amber">Prioridad 1</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h10"></div><div class="task-body"><p class="task-title">🛋️ Mueble principal (salón)</p><p class="task-note">Sofá, mesa o mueble TV según necesidad · Wallapop Gandía, Maisons du Monde</p></div><div class="task-right"><span class="badge b-blue">Semana 1</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h11"></div><div class="task-body"><p class="task-title">🍳 Básicos cocina (ollas, sartenes, platos, vasos)</p><p class="task-note">Flying Tiger, Carrefour Gandía, Consum · set completo ~€80-120</p></div><div class="task-right"><span class="badge b-blue">Día 1</span></div></div>
+      <div class="task" onclick="tick(this,'hogar')"><div class="chk" data-id="h12"></div><div class="task-body"><p class="task-title">🛁 Ropa de cama + toallas + almohadas</p><p class="task-note">Primark, H&amp;M Home, o Consum · no olvidar edredones para los dos cuartos</p></div><div class="task-right"><span class="badge b-blue">Día 1</span></div></div>
+    </div>
+
+    <div class="tip" style="background:var(--finanzas-bg);border-left-color:var(--finanzas-accent);color:var(--finanzas-text);">
+      🎁 <strong>Bono alquiler joven:</strong> hasta €250/mes durante 2 años = €6,000 total. Tienes 29 años (límite 35). Solicitar en GVA.es con el contrato firmado. ¡No lo dejes pasar!
+    </div>
+  </div>
+
+  <!-- ==================== TRABAJO ==================== -->
+  <div id="tab-trabajo" class="panel">
+
+    <div class="stat-grid">
+      <div class="stat" style="background:var(--urgente-bg);border-color:var(--urgente-mid);">
+        <p class="stat-label" style="color:var(--urgente-text);">💵 Por cobrar</p>
+        <p class="stat-val" style="color:var(--urgente-text);">$5,000</p>
+        <p class="stat-sub" style="color:var(--urgente-text);">Soul Dogs · USD</p>
+      </div>
+      <div class="stat" style="background:var(--trabajo-bg);border-color:var(--trabajo-mid);">
+        <p class="stat-label" style="color:var(--trabajo-text);">🎨 Clientes activos</p>
+        <p class="stat-val" style="color:var(--trabajo-text);">2</p>
+        <p class="stat-sub" style="color:var(--trabajo-text);">Soul Dogs + Ness</p>
+      </div>
+      <div class="stat" style="background:var(--personal-bg);border-color:var(--personal-mid);">
+        <p class="stat-label" style="color:var(--personal-text);">🚀 Oportunidad</p>
+        <p class="stat-val" style="color:var(--personal-text);">Kit Digital</p>
+        <p class="stat-sub" style="color:var(--personal-text);">Hostelería digital</p>
+      </div>
+    </div>
+
+    <p class="sec">🐶 Soul Dogs Stories — entregar y cobrar</p>
+    <div class="color-card" style="background:var(--urgente-bg);border-color:var(--urgente-mid);">
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t1"></div><div class="task-body"><p class="task-title">✅ Testing completo de la app (ecommerce + flujo de pago)</p><p class="task-note">Probar en móvil y escritorio · verificar pasarela de pago · revisar responsive</p></div><div class="task-right"><span class="badge b-red">Urgente</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t2"></div><div class="task-body"><p class="task-title">📧 Confirmar fecha de entrega con la cliente</p><p class="task-note">Avisar que retomas el martes tras Semana Santa · confirmar fecha de pago</p></div><div class="task-right"><span class="badge b-red">Martes</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t3"></div><div class="task-body"><p class="task-title">💸 Enviar factura $5,000 USD</p><p class="task-note">Via PayPal o Wise · con 7% IRPF retenido si ya eres autónoma · indicar cuenta de destino</p></div><div class="task-right"><span class="badge b-red">Al entregar</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t4"></div><div class="task-body"><p class="task-title">📦 Entregar accesos, credenciales y manual de uso</p><p class="task-note">Admin panel, hosting, dominio, instrucciones básicas de gestión</p></div><div class="task-right"><span class="badge b-amber">Cierre</span></div></div>
+    </div>
+
+    <p class="sec">✨ Ness — actualización de marca</p>
+    <div class="color-card" style="background:var(--trabajo-bg);border-color:var(--trabajo-mid);">
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t5"></div><div class="task-body"><p class="task-title">🔍 Verificar disponibilidad "Soul Ness" en OEPM para registro</p><p class="task-note">marcayrenovacion.es · verificar que el nombre esté libre antes de presentar al cliente</p></div><div class="task-right"><span class="badge b-blue">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t6"></div><div class="task-body"><p class="task-title">🎨 Diseñar variantes del logo actualizado</p><p class="task-note">Principal · isotipo · blanco/negro · uso digital · versión para registro de marca</p></div><div class="task-right"><span class="badge b-blue">En proceso</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t7"></div><div class="task-body"><p class="task-title">📁 Entregar archivos finales + guía de marca básica</p><p class="task-note">AI, SVG, PNG, PDF · colores, tipografías, usos correctos e incorrectos</p></div><div class="task-right"><span class="badge b-gray">Pendiente</span></div></div>
+    </div>
+
+    <p class="sec">🍽️ Negocio hostelería digital (con Travis)</p>
+    <div class="color-card" style="background:var(--personal-bg);border-color:var(--personal-mid);">
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t8"></div><div class="task-body"><p class="task-title">🏛️ Registrarse como Agente Digitalizadora Kit Digital</p><p class="task-note">red.es/es/iniciativas/kit-digital · el Estado paga tus servicios de digitalización a restaurantes</p></div><div class="task-right"><span class="badge b-purple">Urgente</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t9"></div><div class="task-body"><p class="task-title">📋 Definir oferta y precios: menú digital + web + carta</p><p class="task-note">Traducción automática · alergias · sin PDF · velocidad · precio por restaurante</p></div><div class="task-right"><span class="badge b-purple">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t10"></div><div class="task-body"><p class="task-title">🗺️ Travis: prospección door-to-door Gandía y Denia</p><p class="task-note">Preparar dossier/one-pager · zona playa en temporada alta = urgente conseguir clientes</p></div><div class="task-right"><span class="badge b-purple">Mes 1</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t11"></div><div class="task-body"><p class="task-title">🌐 Crear web del negocio de hostelería</p><p class="task-note">Lo diseñas tú · showcase del producto de menú digital · portafolio para clientes locales</p></div><div class="task-right"><span class="badge b-gray">Mes 1</span></div></div>
+    </div>
+
+    <p class="sec">🏢 Agencia local — trabajo en paralelo</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t12"></div><div class="task-body"><p class="task-title">🎨 Actualizar portfolio en español con trabajo reciente</p><p class="task-note">Soul Dogs, Ness + clientes PayPal actuales · versión para agencias locales valencianas</p></div><div class="task-right"><span class="badge b-green">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t13"></div><div class="task-body"><p class="task-title">💼 LinkedIn en español · conectar agencias Valencia/Gandía</p><p class="task-note">Buscar: agencias diseño web Valencia · marketing digital Gandía · estudios creativos</p></div><div class="task-right"><span class="badge b-green">Mes 1</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t14"></div><div class="task-body"><p class="task-title">📨 Enviar propuesta freelance a 5 agencias locales</p><p class="task-note">Como autónoma (no empleada) · más flexible · nóminas para el banco de la hipoteca</p></div><div class="task-right"><span class="badge b-green">Mes 1</span></div></div>
+    </div>
+
+    <p class="sec">🔧 Infraestructura digital</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t15"></div><div class="task-body"><p class="task-title">💳 Actualizar Stripe con dirección España y cuenta BBVA/Wise</p><p class="task-note">stripe.com → Account settings → Bank accounts → añadir IBAN español</p></div><div class="task-right"><span class="badge b-red">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'trabajo')"><div class="chk" data-id="t16"></div><div class="task-body"><p class="task-title">🔄 Configurar flujo PayPal → Wise → BBVA</p><p class="task-note">Evitar PayPal → Nequi (6.5% comisión) · ahorro estimado €300-500/mes</p></div><div class="task-right"><span class="badge b-amber">Esta semana</span></div></div>
+    </div>
+  </div>
+
+  <!-- ==================== FAMILIA ==================== -->
+  <div id="tab-familia" class="panel">
+
+    <p class="sec">🏫 Amare (6 años) — colegio · matrícula abierta AHORA</p>
+
+    <div class="tip" style="background:var(--urgente-bg);border-left-color:var(--urgente-accent);color:var(--urgente-text);">
+      ⏰ <strong>Plazo activo:</strong> El período de matrícula para 2026-2027 está abierto en la Comunitat Valenciana. Llamar el martes 8 de abril a las 9h — las plazas se agotan rápido.
+    </div>
+
+    <div class="school" style="background:var(--trabajo-bg);border-color:var(--trabajo-accent);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:6px;">
+        <p class="school-name" style="color:var(--trabajo-text);">🏫 Real Colegio Escuelas Pías (Escolapios) ⭐</p>
+        <span class="badge b-blue">Recomendado</span>
+      </div>
+      <p class="school-info" style="color:var(--trabajo-text);">
+        📍 Plaza Escoles Pies 7 · <strong>2 minutos caminando de tu casa</strong><br>
+        📞 962 873 846 · 📧 dir.gandia@escolapiosbetania.es · 🌐 escolapiagandia.org<br>
+        ✅ Concertado (gratuito o &lt;€100/mes) · Bilingüe inglés · <strong>Aula de Educación Especial</strong><br>
+        📚 Infantil, Primaria, ESO y Bachillerato · Fundado en 1807
+      </p>
+    </div>
+
+    <div class="school" style="background:var(--finanzas-bg);border-color:var(--finanzas-mid);">
+      <p class="school-name" style="color:var(--finanzas-text);">🏫 Col·legi Carmelites</p>
+      <p class="school-info" style="color:var(--finanzas-text);">
+        📍 C/ Carmelites 16, Gandía · 📞 962 871 035 · 📧 info@colegiocarmelitas.es<br>
+        ✅ Concertado (gratuito o &lt;€100/mes) · Infantil, Primaria, ESO
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f1"></div><div class="task-body"><p class="task-title">📞 Llamar Escolapios — consultar plazas 1º Primaria</p><p class="task-note">962 873 846 · preguntar sobre apoyos educativos para necesidades especiales (PT/AL)</p></div><div class="task-right"><span class="badge b-red">Martes 9h</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f2"></div><div class="task-body"><p class="task-title">📞 Llamar Carmelitas como segunda opción</p><p class="task-note">962 871 035 · comparar disponibilidad y servicios de apoyo educativo</p></div><div class="task-right"><span class="badge b-red">Martes</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f3"></div><div class="task-body"><p class="task-title">👩‍🏫 Reunión con orientador escolar al matricularse</p><p class="task-note">Presentar informes de terapia que tengáis · pedir evaluación para apoyo PT (Pedagogía Terapéutica) y AL (Audición y Lenguaje)</p></div><div class="task-right"><span class="badge b-amber">Al matricular</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f4"></div><div class="task-body"><p class="task-title">📚 Libros prestados (Xarxa Llibres CV) + beca comedor</p><p class="task-note">Primaria tiene sistema gratuito de préstamo de libros · beca comedor según ingresos familiares</p></div><div class="task-right"><span class="badge b-green">Al matricular</span></div></div>
+    </div>
+
+    <p class="sec">🧩 Amare — CDIAP y terapias</p>
+    <div class="color-card" style="background:var(--familia-bg);border-color:var(--familia-mid);">
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f5"></div><div class="task-body"><p class="task-title">👶 Pedir cita con pediatra — derivación urgente CDIAP Gandía</p><p class="task-note">Límite de edad 6-7 años · CDIAP = Centro Desarrollo Infantil y Atención Precoz · atención GRATUITA</p></div><div class="task-right"><span class="badge b-red">🚨 Ya</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f6"></div><div class="task-body"><p class="task-title">📁 Recopilar informes de terapias anteriores (Colombia/EEUU)</p><p class="task-note">Cualquier diagnóstico, evaluación o informe previo · traducir al español si es necesario</p></div><div class="task-right"><span class="badge b-amber">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f7"></div><div class="task-body"><p class="task-title">🤝 Contactar AUTRADE Valencia — orientación familias TEA</p><p class="task-note">autrade.org · orientación gratuita · grupos de familias · saben los pasos exactos en la CV</p></div><div class="task-right"><span class="badge b-amber">Mes 1</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f8"></div><div class="task-body"><p class="task-title">🏊 Apuntar a Amare a natación — piscina municipal Gandía</p><p class="task-note">No necesita diagnóstico · muy recomendado para TEA/TDAH · efecto regulador sensorial</p></div><div class="task-right"><span class="badge b-green">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f9"></div><div class="task-body"><p class="task-title">📜 Solicitar certificado de discapacidad (tras diagnóstico)</p><p class="task-note">Conselleria Igualtat CV · puede generar €412-1.000/mes + deducciones + descuentos + apoyos escolares</p></div><div class="task-right"><span class="badge b-gray">Tras diagnóstico</span></div></div>
+    </div>
+
+    <p class="sec">🛂 Travis — papeles y trabajo</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f10"></div><div class="task-body"><p class="task-title">⚖️ Buscar gestoría especializada en extranjería Gandía/Valencia</p><p class="task-note">Presupuesto €2,000 · reagrupación de cónyuge de española · proceso 3-6 meses</p></div><div class="task-right"><span class="badge b-red">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f11"></div><div class="task-body"><p class="task-title">💍 Recopilar partida de matrimonio apostillada</p><p class="task-note">Si no está apostillada para España · pedirla en Colombia o donde se casaron</p></div><div class="task-right"><span class="badge b-amber">Este mes</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f12"></div><div class="task-body"><p class="task-title">🏛️ Solicitar cita TIE Travis en Comisaría de Policía</p><p class="task-note">Con apoyo de la gestoría · una vez tenga toda la documentación en regla</p></div><div class="task-right"><span class="badge b-blue">Mes 1-2</span></div></div>
+      <div class="task" onclick="tick(this,'familia')"><div class="chk" data-id="f13"></div><div class="task-body"><p class="task-title">💼 Travis como colaborador en el negocio familiar</p><p class="task-note">Mientras se resuelven sus papeles · puede hacer prospección de hostelería digital en Gandía</p></div><div class="task-right"><span class="badge b-green">Desde ya</span></div></div>
+    </div>
+  </div>
+
+  <!-- ==================== FINANZAS ==================== -->
+  <div id="tab-finanzas" class="panel">
+
+    <div class="stat-grid">
+      <div class="stat" style="background:var(--finanzas-bg);border-color:var(--finanzas-mid);">
+        <p class="stat-label" style="color:var(--finanzas-text);">💰 Ingresos mensuales</p>
+        <p class="stat-val" style="color:var(--finanzas-text);">~€3,050</p>
+        <p class="stat-sub" style="color:var(--finanzas-text);">PayPal neto · convertido EUR</p>
+      </div>
+      <div class="stat" style="background:var(--urgente-bg);border-color:var(--urgente-mid);">
+        <p class="stat-label" style="color:var(--urgente-text);">📤 Gastos fijos/mes</p>
+        <p class="stat-val" style="color:var(--urgente-text);">€2,635</p>
+        <p class="stat-sub" style="color:var(--urgente-text);">Sin carro · incl. autónoma</p>
+      </div>
+      <div class="stat" style="background:var(--hogar-bg);border-color:var(--hogar-mid);">
+        <p class="stat-label" style="color:var(--hogar-text);">🏦 Margen ahorro</p>
+        <p class="stat-val" style="color:var(--hogar-text);">~€415</p>
+        <p class="stat-sub" style="color:var(--hogar-text);">por mes disponible</p>
+      </div>
+    </div>
+
+    <p class="sec">🔴 Pagos urgentes este mes</p>
+    <div class="color-card" style="background:var(--urgente-bg);border-color:var(--urgente-mid);">
+      <div class="money-row"><span class="money-l">🏠 Renta + depósito + comisión</span><span class="money-v" style="color:var(--urgente-text);">-€2,850</span></div>
+      <div class="money-row"><span class="money-l">🎓 Matrícula máster Valencia</span><span class="money-v" style="color:var(--urgente-text);">-€300</span></div>
+      <div class="money-row"><span class="money-l">⚖️ Papeles Travis + Amare</span><span class="money-v" style="color:var(--urgente-text);">-€2,000</span></div>
+      <div class="money-total"><span class="money-l">💸 Total salidas urgentes</span><span class="money-v" style="color:var(--urgente-text);font-size:16px;">-€5,150</span></div>
+      <div class="money-row" style="border-top:none;margin-top:6px;"><span class="money-l" style="color:var(--finanzas-text);">💵 Cobro Soul Dogs (pendiente)</span><span class="money-v" style="color:var(--finanzas-text);">+$5,000 ≈ €4,600</span></div>
+    </div>
+
+    <p class="sec">📊 Gastos fijos mensuales</p>
+    <div class="card">
+      <div class="money-row"><span class="money-l">🏠 Renta</span><span class="money-v" style="color:#DC2626;">-€950</span></div>
+      <div class="money-row"><span class="money-l">🛒 Comida (~€100/semana)</span><span class="money-v" style="color:#DC2626;">-€400</span></div>
+      <div class="money-row"><span class="money-l">⚡ Electricidad (estimado)</span><span class="money-v" style="color:#DC2626;">-€150</span></div>
+      <div class="money-row"><span class="money-l">💧 Agua (estimado)</span><span class="money-v" style="color:#DC2626;">-€150</span></div>
+      <div class="money-row"><span class="money-l">🏫 Escuela Amare</span><span class="money-v" style="color:#DC2626;">-€100</span></div>
+      <div class="money-row"><span class="money-l">⚽ Deportes Amare</span><span class="money-v" style="color:#DC2626;">-€100</span></div>
+      <div class="money-row"><span class="money-l">🎉 Ocio y salidas</span><span class="money-v" style="color:#DC2626;">-€200</span></div>
+      <div class="money-row"><span class="money-l">💪 Gimnasio (pareja)</span><span class="money-v" style="color:#DC2626;">-€80</span></div>
+      <div class="money-row"><span class="money-l">🧹 Limpieza casa</span><span class="money-v" style="color:#DC2626;">-€100</span></div>
+      <div class="money-row"><span class="money-l">📶 Internet</span><span class="money-v" style="color:#DC2626;">-€25</span></div>
+      <div class="money-row"><span class="money-l">🛋️ Amoblado (temporal 3 meses)</span><span class="money-v" style="color:#DC2626;">-€300</span></div>
+      <div class="money-row"><span class="money-l">📝 Cuota autónoma (tarifa plana)</span><span class="money-v" style="color:#DC2626;">-€80</span></div>
+      <div class="money-total"><span class="money-l">Total</span><span class="money-v" style="color:#DC2626;font-size:16px;">-€2,635</span></div>
+      <div class="money-row" style="border-top:none;margin-top:6px;"><span class="money-l" style="color:var(--finanzas-text);">🏦 Margen para ahorro</span><span class="money-v" style="color:var(--finanzas-text);">~€415/mes</span></div>
+    </div>
+
+    <p class="sec">🎯 Metas de ahorro</p>
+    <div class="card">
+      <div class="prog-wrap">
+        <div class="prog-header"><span>🆘 Fondo de emergencia</span><span style="color:var(--muted);">€0 de €5,000</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:0%;background:var(--finanzas-accent);"></div></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:4px;">Guardar en Trade Republic (3.5% TAE · garantizado hasta €75,000)</p>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-header"><span>🏠 Entrada casa (meta €64,000)</span><span style="color:var(--muted);">~8 años a €415/mes</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:0%;background:var(--trabajo-accent);"></div></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:4px;">Subiendo ingresos a €4,500/mes → meta en 5 años ✨</p>
+      </div>
+    </div>
+
+    <p class="sec">✅ Tareas financieras</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'finanzas')"><div class="chk" data-id="fi1"></div><div class="task-body"><p class="task-title">🏦 Abrir cuenta BBVA en España</p><p class="task-note">Domiciliar recibos, renta y cuota autónoma · base para la futura hipoteca</p></div><div class="task-right"><span class="badge b-red">Martes</span></div></div>
+      <div class="task" onclick="tick(this,'finanzas')"><div class="chk" data-id="fi2"></div><div class="task-body"><p class="task-title">📈 Abrir cuenta Trade Republic (3.5% TAE)</p><p class="task-note">Para el fondo de emergencia + ahorro para la casa · garantizado hasta €75,000</p></div><div class="task-right"><span class="badge b-green">Este mes</span></div></div>
+      <div class="task" onclick="tick(this,'finanzas')"><div class="chk" data-id="fi3"></div><div class="task-body"><p class="task-title">🔄 Configurar flujo PayPal → Wise → BBVA</p><p class="task-note">Evitar PayPal → Nequi (6.5% comisión) · ahorro estimado €300-500/mes</p></div><div class="task-right"><span class="badge b-green">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'finanzas')"><div class="chk" data-id="fi4"></div><div class="task-body"><p class="task-title">🎁 Solicitar bono alquiler joven (€250/mes × 24 meses)</p><p class="task-note">GVA.es con contrato firmado · €6,000 en total que muchos no reclaman</p></div><div class="task-right"><span class="badge b-amber">Con contrato</span></div></div>
+      <div class="task" onclick="tick(this,'finanzas')"><div class="chk" data-id="fi5"></div><div class="task-body"><p class="task-title">💳 Solicitar tarjeta de crédito BBVA</p><p class="task-note">Para construir historial crediticio español · necesario para la hipoteca en el futuro</p></div><div class="task-right"><span class="badge b-blue">Mes 1</span></div></div>
+    </div>
+  </div>
+
+  <!-- ==================== FORMACIÓN ==================== -->
+  <div id="tab-formacion" class="panel">
+
+    <div class="tip" style="background:var(--personal-bg);border-left-color:var(--personal-accent);color:var(--personal-text);">
+      🎓 <strong>Máster presencial en Valencia · septiembre 2026</strong><br>
+      Inicio de clases en septiembre · tren Gandía-Valencia ~40 min · 100% deducible como autónoma
+    </div>
+
+    <p class="sec">🎓 Máster — preparación</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo1"></div><div class="task-body"><p class="task-title">💶 Pagar matrícula de reserva (€300)</p><p class="task-note">Para asegurar la plaza antes de que se agote</p></div><div class="task-right"><span class="badge b-red">Urgente</span></div></div>
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo2"></div><div class="task-body"><p class="task-title">📅 Confirmar horario presencial y días en Valencia</p><p class="task-note">Organizar logística: tren Gandía-Valencia · horario compatible con el cole de Amare</p></div><div class="task-right"><span class="badge b-amber">Este mes</span></div></div>
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo3"></div><div class="task-body"><p class="task-title">💰 Solicitar financiación para el resto del máster</p><p class="task-note">Becas MEC · GVA · financiación bancaria · el máster es 100% deducible como autónoma</p></div><div class="task-right"><span class="badge b-purple">Antes de sep.</span></div></div>
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo4"></div><div class="task-body"><p class="task-title">👦 Organizar cuidado de Amare en días de Valencia</p><p class="task-note">Coordinar con Travis · horario escolar cubre la mayor parte · planificar con tiempo</p></div><div class="task-right"><span class="badge b-purple">Antes de sep.</span></div></div>
+    </div>
+
+    <p class="sec">📝 Ser autónoma — primeros pasos</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo5"></div><div class="task-body"><p class="task-title">📋 Alta en Agencia Tributaria (Modelo 036/037)</p><p class="task-note">Online en sede.agenciatributaria.gob.es · IAE 742 diseñadora gráfica + 759 web</p></div><div class="task-right"><span class="badge b-red">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo6"></div><div class="task-body"><p class="task-title">🏛️ Alta en Seguridad Social (RETA)</p><p class="task-note">Tarifa plana €80/mes primer año · importss.gob.es · llevar el modelo de Hacienda</p></div><div class="task-right"><span class="badge b-red">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo7"></div><div class="task-body"><p class="task-title">👔 Contratar gestora fiscal en Gandía (~€60/mes)</p><p class="task-note">Modelos trimestrales 303 y 130 · 100% deducible · pide recomendaciones en grupos autónomos</p></div><div class="task-right"><span class="badge b-amber">Esta semana</span></div></div>
+      <div class="task" onclick="tick(this,'formacion')"><div class="chk" data-id="fo8"></div><div class="task-body"><p class="task-title">💡 Registrarse como Agente Digitalizadora Kit Digital</p><p class="task-note">red.es · requiere ser autónoma activa con CIF · ¡grandes oportunidades de ingreso!</p></div><div class="task-right"><span class="badge b-amber">Tras alta autónoma</span></div></div>
+    </div>
+  </div>
+
+  <!-- ==================== PERSONAL ==================== -->
+  <div id="tab-personal" class="panel">
+
+    <div class="two">
+      <div class="stat" style="background:var(--personal-bg);border-color:var(--personal-mid);border:1px solid var(--personal-mid);">
+        <p class="stat-label" style="color:var(--personal-text);">💪 Gimnasio</p>
+        <p class="stat-val" style="color:var(--personal-text);">5 días</p>
+        <p class="stat-sub" style="color:var(--personal-text);">~2h/día · proteger este espacio</p>
+      </div>
+      <div class="stat" style="background:var(--finanzas-bg);border:1px solid var(--finanzas-mid);">
+        <p class="stat-label" style="color:var(--finanzas-text);">🌊 Nueva ciudad</p>
+        <p class="stat-val" style="color:var(--finanzas-text);">Gandía</p>
+        <p class="stat-sub" style="color:var(--finanzas-text);">Playa + ciudad + campo</p>
+      </div>
+    </div>
+
+    <p class="sec">💪 Bienestar y salud</p>
+    <div class="card">
+      <div class="task" onclick="tick(this,'personal')"><div class="chk" data-id="p1"></div><div class="task-body"><p class="task-title">🏋️ Encontrar gimnasio en Gandía</p><p class="task-note">SmartFit Gandía ~€25-30/mes · o polideportivo municipal (más económico)</p></div><div class="task-right"><span class="badge b-purple">Semana 1</span></div></div>
+      <div class="task" onclick="tick(this,'personal')"><div class="chk" data-id="p2"></div><div class="task-body"><p class="task-title">📅 Bloquear horario de gym en el calendario</p><p class="task-note">Mañanas o mediodía · tratarlo como una reunión inamovible de trabajo</p></div><div class="task-right"><span class="badge b-purple">Semana 1</span></div></div>
+      <div class="task" onclick="tick(this,'personal')"><div class="chk" data-id="p3"></div><div class="task-body"><p class="task-title">🩺 Tarjeta sanitaria CV — médico de cabecera</p><p class="task-note">Centro de salud más cercano · necesitas empadronamiento + DNI · para toda la familia</p></div><div class="task-right"><span class="badge b-purple">Tras empadronamiento</span></div></div>
+      <div class="task" onclick="tick(this,'personal')"><div class="chk" data-id="p4"></div><div class="task-body"><p class="task-title">🚂 Conocer la ruta tren Gandía-Valencia (Cercanías Renfe)</p><p class="task-note">~40 min · para el máster en septiembre · renfe.com · comprar bono mensual</p></div><div class="task-right"><span class="badge b-green">Antes de sep.</span></div></div>
+      <div class="task" onclick="tick(this,'personal')"><div class="chk" data-id="p5"></div><div class="task-body"><p class="task-title">🌊 Explorar Gandía — playas, mercados, barrios</p><p class="task-note">Playa del Norte · Mercado Municipal · casco histórico · esto también es parte del plan 🌴</p></div><div class="task-right"><span class="badge b-green">¡Disfruta!</span></div></div>
+    </div>
+
+    <div class="tip" style="background:var(--finanzas-bg);border-left-color:var(--finanzas-accent);color:var(--finanzas-text);font-size:13px;padding:16px;">
+      💚 <strong>Para ti, Stephania:</strong> Has movido a tu familia 3 veces en pocos años y construiste un negocio real con clientes en 3 continentes, todo mientras eras mamá. Tienes 29 años, eres española de pleno derecho, y esta vez llegas con un plan real, una ciudad que te da el mar, y una calle que lleva el nombre del fundador del colegio de tu hijo. Esta etapa es diferente. 🌊
+    </div>
+  </div>
+
+  <div class="footer">
+    🧠 Mi Cerebro · Stephania Barrero · Gandía 2026 · Actualizado con amor ✨<br>
+    C/ Sant Josep de Calassanç 7, 1º 1ª · CP 46701 · stephy.be97@gmail.com
+  </div>
+
+</div>
+
+<script>
+  // Date
+  const d = new Date();
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('fecha-badge').textContent = '📅 ' + dias[d.getDay()] + ' ' + d.getDate() + ' ' + meses[d.getMonth()];
+
+  // Tab switching
+  function tab(id, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Colors per category
+  const catColors = {
+    urgente:  '#EF4444',
+    hogar:    '#F59E0B',
+    trabajo:  '#3B82F6',
+    familia:  '#F97316',
+    finanzas: '#22C55E',
+    formacion:'#8B5CF6',
+    personal: '#8B5CF6'
+  };
+
+  // Load saved state
+  function loadState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('cerebro_stephania') || '{}');
+      Object.keys(saved).forEach(id => {
+        const chk = document.querySelector('[data-id="' + id + '"]');
+        if (chk && saved[id]) {
+          chk.classList.add('done');
+          chk.textContent = '✓';
+          const title = chk.closest('.task').querySelector('.task-title');
+          if (title) title.classList.add('done');
+        }
+      });
+    } catch(e) {}
+    updateProgress();
+  }
+
+  // Save state
+  function saveState() {
+    try {
+      const state = {};
+      document.querySelectorAll('[data-id]').forEach(el => {
+        state[el.dataset.id] = el.classList.contains('done');
+      });
+      localStorage.setItem('cerebro_stephania', JSON.stringify(state));
+    } catch(e) {}
+  }
+
+  // Tick a task
+  function tick(taskEl, cat) {
+    const chk = taskEl.querySelector('.chk');
+    const title = taskEl.querySelector('.task-title');
+    const isDone = chk.classList.toggle('done');
+    chk.textContent = isDone ? '✓' : '';
+    if (isDone) {
+      chk.style.background = catColors[cat] || '#22C55E';
+      chk.style.borderColor = catColors[cat] || '#22C55E';
+    } else {
+      chk.style.background = '';
+      chk.style.borderColor = '';
+    }
+    if (title) title.classList.toggle('done');
+    saveState();
+    updateProgress();
+  }
+
+  // Progress
+  function updateProgress() {
+    const all = document.querySelectorAll('[data-id]');
+    const done = document.querySelectorAll('[data-id].done');
+    const pct = all.length ? Math.round(done.length / all.length * 100) : 0;
+    document.getElementById('global-bar').style.width = pct + '%';
+    document.getElementById('global-pct').textContent = pct + '%';
+  }
+
+  loadState();
+</script>
+</body>
+</html>
